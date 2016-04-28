@@ -22,11 +22,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="MosheNmes" />
+        <module name="nituz" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="MosheNmes" target="1.5" />
+      <module name="nituz" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
