@@ -1,3 +1,8 @@
+import BackEnd.Truck;
+import Exceptions.WrongInfo;
+import HovalotDAL.DAL_HOVALOT;
+import HovalotDAL.IDAL_HOVALOT;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -9,35 +14,26 @@ public class mainRun {
 
     public static void main(String[] args){
 
-        connectToDatabase();
+        IDAL_HOVALOT dal = DAL_HOVALOT.getInstance();
 
+        dal.connectDatabase("AD1.db");
 
-    }
-
-
-    public static void connectToDatabase() {
-        Connection c = null;
-        Statement stmt = null;
+        Truck t = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:Store.db");
-            System.out.println("Opened database successfully");
-
-            stmt = c.createStatement();
-            String sql = "CREATE TABLE HOVALOT " +
-                    "(ID INT PRIMARY KEY     NOT NULL," +
-                    " NAME           TEXT    NOT NULL, " +
-                    " AGE            INT     NOT NULL, " +
-                    " ADDRESS        CHAR(50), " +
-                    " SALARY         REAL)";
-            stmt.executeUpdate(sql);
-            stmt.close();
-            c.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            t = new Truck(123412341234L,"MAZDA","Red",400,20,"A2");
+        } catch (WrongInfo wrongInfo) {
+            wrongInfo.printStackTrace();
         }
-        System.out.println("Table created successfully");
+
+        dal.addTruck(t);
+
+        Truck temp = dal.getTruck(123412341234L);
+
+        System.out.println(temp.getColor());
+
+        dal.disconnectDatabase();
+
+
     }
 
 
