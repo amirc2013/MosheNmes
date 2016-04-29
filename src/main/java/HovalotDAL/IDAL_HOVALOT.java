@@ -2,6 +2,7 @@ package HovalotDAL;
 
 import BackEnd.Driver;
 import BackEnd.Truck;
+import Exceptions.AlreadyExist;
 import Exceptions.WrongInfo;
 
 /**
@@ -14,7 +15,7 @@ public interface IDAL_HOVALOT {
 
 
     Truck getTruck(long license_num);
-    boolean addTruck(Truck add);
+    void addTruck(Truck add) throws AlreadyExist;
 
 
     Driver getDriver(long driverID);

@@ -1,6 +1,4 @@
-Apr 28, 2016 5:08:31 PM HovalotDAL.DAL_HOVALOT connectDatabase
+Apr 29, 2016 4:45:13 AM HovalotDAL.DAL_HOVALOT connectDatabase
 INFO: Opened database successfully
-Apr 28, 2016 5:08:31 PM HovalotDAL.DAL_HOVALOT addTruck
-INFO: UNIQUE constraint failed: trucks.license_num
-Apr 28, 2016 5:08:31 PM HovalotDAL.DAL_HOVALOT addTruck
-INFO: Truck num 123412341234 HAS NOT inserted to the DATABASE
+Apr 29, 2016 4:45:31 AM HovalotDAL.DAL_HOVALOT addTruck
+INFO: Truck num 23424142412 got inserted SUCCESSFULLY to the DATABASE

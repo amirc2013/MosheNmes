@@ -81,4 +81,13 @@ public class Truck {
             throw new WrongInfo("appro_license");
         this.appro_license = appro_license;
     }
+
+    public String toString(){
+        return  "Truck's license number     "+license_num+"\n" +
+                "Max weight :     "+ getMax_weight()+"\n" +
+                "Model :        "+getModel()+"\n" +
+                "Color :        "+getColor()+"\n" +
+                "Clean weight :         "+getClean_weight()+"\n" +
+                "Appropriate license :      "+getAppro_license()+"\n" ;
+    }
 }

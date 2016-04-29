@@ -2,6 +2,7 @@ package HovalotDAL;
 
 import BackEnd.Driver;
 import BackEnd.Truck;
+import Exceptions.AlreadyExist;
 import Exceptions.WrongInfo;
 
 import java.io.IOException;
@@ -46,15 +47,13 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
         return true;
     }
 
-    public boolean addTruck(Truck add) {
-        boolean ans = false;
+    public void addTruck(Truck add) throws AlreadyExist {
         try {
             Statement stm = database.createStatement();
             String sql = "INSERT INTO trucks (license_num,model,color,clean_weight,maximum_weight,license_needed) " +
                          "VALUES ("+add.getLicense_num()+", '"+add.getModel()+"', '"+add.getColor()+"', "+add.getClean_weight()+","+add.getMax_weight()+",'"+add.getAppro_license()+"');";
 
             if(stm.executeUpdate(sql) == 1) {
-                ans = true;
                 log.info("Truck num "+add.getLicense_num()+" got inserted SUCCESSFULLY to the DATABASE");
             } else {
                 log.info("Truck num "+add.getLicense_num()+" HAS NOT inserted to the DATABASE");
@@ -62,8 +61,8 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
         } catch (SQLException e) {
             log.info(e.getMessage());
             log.info("Truck num "+add.getLicense_num()+" HAS NOT inserted to the DATABASE");
+            throw new AlreadyExist("license_num");
         }
-        return ans;
     }
 
     /**
@@ -80,6 +79,7 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
             ResultSet rs = stm.executeQuery(sql);
             if (rs.next()){
                 ans = new Truck(rs.getLong("license_num"),rs.getString("model"),rs.getString("color"),rs.getInt("maximum_weight"),rs.getInt("clean_weight"),rs.getString("license_needed"));
+                log.info("A Truck details has been read , with the details below :\n"+ans.toString());
             }
         } catch (SQLException e) {
             log.info(e.getMessage());
