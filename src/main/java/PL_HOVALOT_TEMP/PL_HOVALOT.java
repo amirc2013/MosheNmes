@@ -255,7 +255,7 @@ public class PL_HOVALOT implements IPL_HOVALOT{
                     print("If you get THIS message please contact us. something went wrong.");
                     return;
                 }
-
+                print("");
                 print("A Truck with license number "+license_num+" has been added Successfully");
 
 
