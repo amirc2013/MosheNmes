@@ -1,7 +1,9 @@
 package BL_HOVALOT;
 
+import BackEnd.Driver;
 import BackEnd.Truck;
 import Exceptions.AlreadyExist;
+import Exceptions.NotExist;
 import HovalotDAL.IDAL_HOVALOT;
 
 import java.io.IOException;
@@ -18,6 +20,45 @@ public class BL_HOVALOT implements IBL_HOVALOT {
     private static final Logger log= Logger.getLogger( BL_HOVALOT.class.getName() );
     private IDAL_HOVALOT idal = null;
 
+    public void deleteTruck(Truck t) throws NotExist {
+        Truck temp = null;
+        if((temp = idal.getTruck(t.getLicense_num()))!=null){
+            idal.deleteTruck(t);
+        }
+        else{
+            NotExist n =  new NotExist("Truck");
+            log.info(n.getMessage());
+            throw n;
+        }
+    }
+
+    public Driver getDriver(long driverID) {
+        return null;
+    }
+
+    public void addDriver(Driver add) throws AlreadyExist {
+        Driver temp = null;
+        if((temp = idal.getDriver(add.getDriverID()))==null){
+            idal.addDriver(add);
+        }
+        else{
+            AlreadyExist a =  new AlreadyExist("Driver");
+            log.info(a.getMessage());
+            throw a;
+        }
+    }
+
+    public void deleteDriver(Driver delete) throws NotExist {
+        Driver temp = null;
+        if((temp = idal.getDriver(delete.getDriverID()))!=null){
+            idal.deleteDriver(delete);
+        }
+        else{
+            NotExist n =  new NotExist("Truck");
+            log.info(n.getMessage());
+            throw n;
+        }
+    }
 
     public void addTruck(Truck t) throws AlreadyExist {
         Truck temp = null;

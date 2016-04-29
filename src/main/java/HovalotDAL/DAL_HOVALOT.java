@@ -1,12 +1,12 @@
 package HovalotDAL;
 
+import BackEnd.*;
 import BackEnd.Driver;
-import BackEnd.Truck;
-import Exceptions.AlreadyExist;
-import Exceptions.WrongInfo;
+import Exceptions.*;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -56,12 +56,71 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
             if(stm.executeUpdate(sql) == 1) {
                 log.info("Truck num "+add.getLicense_num()+" got inserted SUCCESSFULLY to the DATABASE");
             } else {
-                log.info("Truck num "+add.getLicense_num()+" HAS NOT inserted to the DATABASE");
+                log.info("Truck num "+add.getLicense_num()+" NOT inserted to the DATABASE");
             }
         } catch (SQLException e) {
             log.info(e.getMessage());
-            log.info("Truck num "+add.getLicense_num()+" HAS NOT inserted to the DATABASE");
+            log.info("Truck num "+add.getLicense_num()+" NOT inserted to the DATABASE");
             throw new AlreadyExist("license_num");
+        }
+    }
+
+    public void deleteTruck(Truck delete) throws NotExist {
+        try {
+            Statement stm = database.createStatement();
+            String sql = "DELETE from trucks where license_num="+delete.getLicense_num()+";";
+
+            if(stm.executeUpdate(sql) == 1) {
+                log.info("Truck num "+delete.getLicense_num()+" got removed SUCCESSFULLY to the DATABASE");
+            } else {
+                log.info("Truck num "+delete.getLicense_num()+" NOT removed from the DATABASE");
+            }
+        } catch (SQLException e) {
+            log.info(e.getMessage());
+            log.info("Truck num "+delete.getLicense_num()+" NOT removed from the DATABASE");
+            throw new NotExist("license_num");
+        }
+    }
+
+    public Driver getDriver(long driverID) {
+        return null;
+    }
+
+    public void addDriver(Driver add) throws AlreadyExist {
+        try {
+            Statement stm = database.createStatement();
+            List<String> l=add.getLicenses();
+            for(int i=0; i<l.size(); i++) {
+                String sql = "INSERT INTO drivers (driverID,license) " +
+                        "VALUES (" + add.getDriverID() + ", '" + l.get(i) + "');";
+
+                if (stm.executeUpdate(sql) != 1) {
+                    log.info("Driver " + add.getDriverID() + " NOT inserted to the DATABASE");
+                    break;
+                }
+            }
+            log.info("Driver " + add.getDriverID() + " got inserted SUCCESSFULLY to the DATABASE");
+        } catch (SQLException e) {
+            log.info(e.getMessage());
+            log.info("Driver "+add.getDriverID()+" NOT inserted to the DATABASE");
+            throw new AlreadyExist("driverID, license");
+        }
+    }
+
+    public void deleteDriver(Driver delete) throws NotExist {
+        try {
+            Statement stm = database.createStatement();
+            String sql = "DELETE from drivers where driverID="+delete.getDriverID()+";";
+
+            if(stm.executeUpdate(sql) == 1) {
+                log.info("Driver "+delete.getDriverID()+" got removed SUCCESSFULLY to the DATABASE");
+            } else {
+                log.info("Driver "+delete.getDriverID()+" NOT removed from the DATABASE");
+            }
+        } catch (SQLException e) {
+            log.info(e.getMessage());
+            log.info("Driver " + delete.getDriverID() + " NOT removed from the DATABASE");
+            throw new NotExist("driverID");
         }
     }
 
@@ -87,9 +146,22 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
         return ans;
     }
 
-    public Driver getDriver(long driverID) {
-        return null;
-    }
+    /*public Driver getDriver(long driverID) {
+        Driver ans = null;
+        try {
+            Statement stm = database.createStatement();
+            String sql = "SELECT driverID , license " +
+                    "FROM drivers WHERE driverID = "+ driverID +";" ;
+            ResultSet rs = stm.executeQuery(sql);
+            if (rs.next()){
+                ans = new BackEnd.Driver(rs.getLong("driverID"),rs.getString("license"));
+                log.info("A Truck details has been read , with the details below :\n"+ans.toString());
+            }
+        } catch (SQLException e) {
+            log.info(e.getMessage());
+        } catch (WrongInfo w){ /* Ignore  }
+        return ans;
+    }*/
 
 
 

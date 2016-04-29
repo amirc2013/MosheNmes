@@ -28,13 +28,13 @@ public class PL_HOVALOT implements IPL_HOVALOT{
                 trucksActions();
                 break;
             case 2:
-//                driversActions();
+                driversActions();
                 break;
             case 3:
-//                stationsActions();
+                stationsActions();
                 break;
             case 4:
-//                deliveriesActions();
+                deliveriesActions();
                 break;
             case 5:
                 print("");
@@ -79,6 +79,59 @@ public class PL_HOVALOT implements IPL_HOVALOT{
 
     }
 
+    private void driversActions(){
+        boolean isOn = true;
+
+        while(isOn){
+            showDriversMenu();
+            try {
+                isOn = trucksPickHandler(Integer.parseInt(sc.next()));
+            } catch (NumberFormatException e) {
+                print("");
+                print("You wrote a wrong input, please choose a valid choise.");
+                print("");
+                isOn = true;
+            }
+        }
+
+
+    }
+
+    private void stationsActions(){
+        boolean isOn = true;
+
+        while(isOn){
+            showStationsMenu();
+            try {
+                isOn = trucksPickHandler(Integer.parseInt(sc.next()));
+            } catch (NumberFormatException e) {
+                print("");
+                print("You wrote a wrong input, please choose a valid choise.");
+                print("");
+                isOn = true;
+            }
+        }
+
+
+    }
+
+    private void deliveriesActions(){
+        boolean isOn = true;
+
+        while(isOn){
+            showTrucksMenu();
+            try {
+                isOn = trucksPickHandler(Integer.parseInt(sc.next()));
+            } catch (NumberFormatException e) {
+                print("");
+                print("You wrote a wrong input, please choose a valid choise.");
+                print("");
+                isOn = true;
+            }
+        }
+
+
+    }
 
     private boolean trucksPickHandler(int pick){
         switch (pick){
@@ -350,6 +403,39 @@ public class PL_HOVALOT implements IPL_HOVALOT{
         print("2. Add a Truck to your database.");
         print("3. Edit a Truck's details.");
         print("4. Delete a Truck from you database. ");
+        print("5. Return back to main menu.");
+        print("");
+    }
+
+    private void showDriversMenu(){
+        print("");
+        print("Welcome to Drivers menu, please pick a Section :");
+        print("1. View Driver's details.");
+        print("2. Add a Driver to your database.");
+        print("3. Edit a Driver's details.");
+        print("4. Delete a Driver from your database. ");
+        print("5. Return back to main menu.");
+        print("");
+    }
+
+    private void showStationsMenu(){
+        print("");
+        print("Welcome to Stations menu, please pick a Section :");
+        print("1. View Station's details.");
+        print("2. Add a Station to your database.");
+        print("3. Edit a Station's details.");
+        print("4. Delete a Station from your database. ");
+        print("5. Return back to main menu.");
+        print("");
+    }
+
+    private void showDeliveriesMenu(){
+        print("");
+        print("Welcome to Deliveries menu, please pick a Section :");
+        print("1. View Delivery's details.");
+        print("2. Add a Delivery to your database.");
+        print("3. Edit a Delivery's details.");
+        print("4. Delete a Delivery from your database. ");
         print("5. Return back to main menu.");
         print("");
     }
