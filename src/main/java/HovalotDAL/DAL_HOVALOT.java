@@ -205,7 +205,7 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
         try {
             Statement stm = database.createStatement();
             String sql = "INSERT INTO participants (adress,area,phone,contact) " +
-                    "VALUES ("+add.getAddress()+", '"+add.getArea()+"', '"+add.getPhone()+"', "+add.getContact()+"');";
+                    "VALUES ('"+add.getAddress()+"', '"+add.getArea()+"', "+add.getPhone()+", '"+add.getContact()+"');";
 
             if(stm.executeUpdate(sql) == 1) {
                 log.info("Participant "+add.getAddress()+" got inserted SUCCESSFULLY to the DATABASE");
@@ -319,8 +319,21 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
 
     }
 
-    public void editDriver(long driverID, Driver d) {
-
+    public void editDriver(long driverId, String oldLicense, String newLicense) {
+        try {
+            Statement stm = database.createStatement();
+            String sql = "UPDATE drivers " +
+                    "set license = '"+newLicense+"' " +
+                    "where driverID = "+driverId+" and license = "+oldLicense+" ;";
+            int o = stm.executeUpdate(sql);
+            if(o==1){
+                log.info("driver and license "+driverId+" "+oldLicense+" got updated SUCCESSFULLY.");
+            } else {
+                log.info("driver and license "+driverId+" "+oldLicense+" has NOT updated.");
+            }
+        } catch (SQLException e) {
+            log.info(e.getMessage());
+        }
     }
 
     public void editDelivery(Date date, Delivery d) {
