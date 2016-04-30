@@ -319,18 +319,79 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
 
     }
 
-    public void editDriver(long driverID, Driver d) {
 
+    public void editDriver(long driverId, String oldLicense, String newLicense) {
+        try {
+            Statement stm = database.createStatement();
+            String sql = "UPDATE drivers " +
+                    "set license = '"+newLicense+"' " +
+                    "where driverID = "+driverId+" and license = "+oldLicense+" ;";
+            int o = stm.executeUpdate(sql);
+            if(o==1){
+                log.info("driver and license "+driverId+" "+oldLicense+" got updated SUCCESSFULLY.");
+            } else {
+                log.info("driver and license "+driverId+" "+oldLicense+" has NOT updated.");
+            }
+        } catch (SQLException e) {
+            log.info(e.getMessage());
+        }
     }
 
     public void editDelivery(Date date, Delivery d) {
+        try {
+            Statement stm = database.createStatement();
+            String sql = "UPDATE deliveries " +
+                    "set driverID = "+d.getDriver().getDriverID()+" " +
+                    "truck_num = "+d.getTruck().getLicense_num()+" "+
+                    "source = '"+d.getSource().getAddress()+"' "+
+                    "where date = '"+date+" ;";
+            editPartInDelivery(d);
+            int o = stm.executeUpdate(sql);
+            if(o==1){
+                log.info("delivery "+date+" got updated SUCCESSFULLY.");
+            } else {
+                log.info("delivery "+date+ " was NOT updated.");
+            }
+        }
+        catch (SQLException e) {
+            log.info(e.getMessage());
+        }
+    }
 
+    private void editPartInDelivery(Delivery d){
+        try {
+            Map<Integer,Participant> m=d.getDestinations();
+            Statement stm = database.createStatement();
+            String sql = "DELETE from delivery_destinations where date='"+d.getDate()+"';";
+            for (Map.Entry<Integer, Participant> entry : m.entrySet()) {
+                String sql2 = "INSERT INTO delivery_destinations (date,adress,order_doc) " +
+                        "VALUES (" + d.getDate().toString() + ", '" + entry.getValue().getAddress() + "' , '" + entry.getKey() + "');";
+            }
+        }
+        catch (SQLException e) {
+            log.info(e.getMessage());
+        }
     }
 
     public void editParticipant(String adress, Participant p) {
-
+        try {
+            Statement stm = database.createStatement();
+            String sql = "UPDATE participants " +
+                    "set area = '"+p.getArea()+"' " +
+                    "phone = "+p.getPhone()+" "+
+                    "contact = '"+p.getContact()+"' "+
+                    "where adress = '"+adress+"' ;";
+            int o = stm.executeUpdate(sql);
+            if(o==1){
+                log.info("participant "+adress+" got updated SUCCESSFULLY.");
+            } else {
+                log.info("participant "+adress+ " was NOT updated.");
+            }
+        }
+        catch (SQLException e) {
+            log.info(e.getMessage());
+        }
     }
-
     //singleton
     private DAL_HOVALOT(){
         FileHandler fh;

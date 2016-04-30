@@ -25,7 +25,8 @@ public interface IDAL_HOVALOT {
     Driver getDriver(long driverID);
     void addDriver(Driver add) throws AlreadyExist;
     void deleteDriver(Driver delete, String license) throws NotExist;
-    void editDriver(long driverID, Driver d);
+    void editDriver(long driverId, String oldLicense, String newLicense);
+
 
     Delivery getDelivery(Date date);
     void addDelivery(Delivery add) throws AlreadyExist;
