@@ -1,16 +1,16 @@
 package PL_HOVALOT_TEMP;
 
 import BL_HOVALOT.IBL_HOVALOT;
+import BackEnd.Delivery;
 import BackEnd.Driver;
+import BackEnd.Participant;
 import BackEnd.Truck;
 import Exceptions.AlreadyExist;
 import Exceptions.NotExist;
 import Exceptions.WrongInfo;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -107,7 +107,7 @@ public class PL_HOVALOT implements IPL_HOVALOT{
         while(isOn){
             showStationsMenu();
             try {
-                isOn = trucksPickHandler(Integer.parseInt(sc.next()));
+                isOn = stationsPickHandler(Integer.parseInt(sc.next()));
             } catch (NumberFormatException e) {
                 print("");
                 print("You wrote a wrong input, please choose a valid choise.");
@@ -125,7 +125,7 @@ public class PL_HOVALOT implements IPL_HOVALOT{
         while(isOn){
             showDeliveriesMenu();
             try {
-                isOn = trucksPickHandler(Integer.parseInt(sc.next()));
+                isOn = deliveriesPickHandler(Integer.parseInt(sc.next()));
             } catch (NumberFormatException e) {
                 print("");
                 print("You wrote a wrong input, please choose a valid choise.");
@@ -155,7 +155,7 @@ public class PL_HOVALOT implements IPL_HOVALOT{
                 editDriver();
                 break;
             case 4:
-                deleteTruck();
+                deleteDriver();
                 break;
             case 5:
                 return false;
@@ -173,6 +173,37 @@ public class PL_HOVALOT implements IPL_HOVALOT{
             case 1:
                 try {
                     showTruckDetail();
+                } catch (Exception e) {
+                    log.info(e.getMessage());
+                    print("");
+                    print("You wrote a wrong input, please choose a valid choise.");
+                    print("");
+                }
+                break;
+            case 2:
+                addTrucks();
+                break;
+            case 3:
+                editTruck();
+                break;
+            case 4:
+                deleteTruck();
+                break;
+            case 5:
+                return false;
+            default:
+                print("");
+                print("You wrote a wrong input, please choose a valid choise.");
+                print("");
+                break;
+        }
+        return true;
+    }
+    private boolean deliveriesPickHandler(int pick){
+        switch (pick){
+            case 1:
+                try {
+                    showDeliveryDetail();
                 } catch (Exception e) {
                     log.info(e.getMessage());
                     print("");
@@ -569,6 +600,145 @@ public class PL_HOVALOT implements IPL_HOVALOT{
 
 
     }
+    private  void deleteDriver(){
+        boolean more = true;
+        long license_num = 0;
+        Driver toDelete = null;
+        while (more){
+            boolean correct = false;
+
+            while (!correct) {
+                print("");
+                printl("Please provide a Driver license : ");
+                try {
+                    sc = new Scanner(System.in);
+                    license_num = sc.nextLong();
+                    if (license_num < -1)
+                        throw new Exception();
+                    if ((toDelete = ibl.getDriver(license_num)) == null) {
+
+                        if (license_num == -1)
+                            return;
+
+                        print("");
+                        print("There is not such as Driver in our database. Try again.\nOr write -1 to cancel.");
+
+                        correct = false;
+                    } else {
+                        correct = true;
+                    }
+                } catch (Exception e) {
+                    print("");
+                    print("Wrong input. write -1 if you want to cancel.");
+                }
+            }
+
+            try {
+                ibl.deleteDriver(toDelete);
+            } catch (NotExist notExist) {
+                log.info(notExist.getMessage());
+
+                print("");
+                print("If you get THIS message please contact us. something went wrong.");
+                print("");
+                return;
+
+
+            }
+
+            print("");
+            print("A Driver with ID number "+license_num+" has been removed Successfully");
+
+
+            correct = false;
+            while (!correct) {
+                print("");
+                printl("Do you want to remove an other one ? write Y/N :");
+                String ans = sc.next();
+                if (ans.equals("N") || ans.equals("n")) {
+                    correct = true;
+                    more = false;
+                } else if (!ans.equals("Y") && !ans.equals("y")) {
+                    print("");
+                    print("Wrong input. ");
+
+                } else {
+                    correct = true;
+                }
+            }
+        }
+
+
+    }
+    private  void deleteStations(){
+        boolean more = true;
+        String address = null;
+        Participant toDelete = null;
+        while (more){
+            boolean correct = false;
+
+            while (!correct) {
+                print("");
+                printl("Please provide a station's address : ");
+                try {
+                    sc = new Scanner(System.in);
+                    address = sc.next();
+                    if (address == null && !address.equals(""))
+                        throw new Exception();
+                    if ((toDelete = ibl.getParticipant(address)) == null) {
+
+                        if (address.equals("-1"))
+                            return;
+                        print("");
+                        print("There is not such as Truck in our database. Try again.\nOr write -1 to cancel.");
+
+                        correct = false;
+                    } else {
+                        correct = true;
+                    }
+                } catch (Exception e) {
+                    print("");
+                    print("Wrong input. write -1 if you want to cancel.");
+                }
+            }
+
+            try {
+                ibl.deleteParticipant(toDelete);
+            } catch (NotExist notExist) {
+                log.info(notExist.getMessage());
+
+                print("");
+                print("If you get THIS message please contact us. something went wrong.");
+                print("");
+                return;
+
+
+            }
+
+            print("");
+            print("A Station addressed at "+address+" has been removed Successfully");
+
+
+            correct = false;
+            while (!correct) {
+                print("");
+                printl("Do you want to remove an other one ? write Y/N :");
+                String ans = sc.next();
+                if (ans.equals("N") || ans.equals("n")) {
+                    correct = true;
+                    more = false;
+                } else if (!ans.equals("Y") && !ans.equals("y")) {
+                    print("");
+                    print("Wrong input. ");
+
+                } else {
+                    correct = true;
+                }
+            }
+        }
+
+
+    }
 
     private  void deleteTruck(){
         boolean more = true;
@@ -746,6 +916,137 @@ public class PL_HOVALOT implements IPL_HOVALOT{
 
 
     }
+    private void addStations(){
+        boolean more = true;
+        long phone = 0;
+        String contact=null;
+        String address =null;
+        String area = null;
+        Participant p = null;
+        while (more){
+            boolean correct = false;
+
+            while (!correct) {
+                print("");
+                printl("Please provide a station address : ");
+                try {
+                    sc = new Scanner(System.in);
+                    address = sc.next();
+                    if (address!=null && address.equals(""))
+                        throw new Exception();
+                    if (ibl.getParticipant(address) != null) {
+                        print("");
+                        print("This station already exist. Please check that out.");
+
+                        correct = false;
+                    } else {
+                        correct = true;
+                    }
+                } catch (Exception e) {
+                    print("");
+                    print("Wrong input. write -1 if you want to cancel.");
+                }
+            }
+
+            if (address.equals("-1"))
+                return;
+
+            correct = false;
+            while (!correct) {
+                print("");
+                printl("Please provide a contact name  : ");
+                try {
+                    sc = new Scanner(System.in);
+                    contact = sc.next();
+                    if (contact.equals("") || contact == null)
+                        throw new Exception();
+                    correct = true;
+                } catch (Exception e) {
+                    print("");
+                    print("Wrong input. write -1 if you want to cancel.");
+                }
+            }
+            if (contact.equals("-1"))
+                return;
+
+            correct = false;
+            while (!correct) {
+                print("");
+                printl("Please a area  : ");
+                try {
+                    sc = new Scanner(System.in);
+                    area = sc.next();
+                    if (area.equals("") || area == null)
+                        throw new Exception();
+                    correct = true;
+                } catch (Exception e) {
+                    print("");
+                    print("Wrong input. write -1 if you want to cancel.");
+                }
+            }
+            if(area.equals("-1"))
+                return;
+
+            correct = false;
+            while (!correct) {
+                print("");
+                printl("Please provide a phone number  : ");
+                try {
+                    sc = new Scanner(System.in);
+                    phone = sc.nextLong();
+                    if (phone < 1 && phone != -1)
+                        throw new Exception();
+                    correct = true;
+                } catch (Exception e) {
+                    print("");
+                    print("Wrong input. write -1 if you want to cancel.");
+                }
+            }
+            if(phone == -1)
+                return;
+
+
+            try {
+                p = new Participant(address,area,phone,contact);
+            } catch (WrongInfo wrongInfo) {
+                log.info(wrongInfo.getMessage());
+                print("");
+                print("If you get THIS message please contact us. something went wrong.");
+                return;
+            }
+            try {
+                ibl.addParticipant(p);
+            } catch (AlreadyExist alreadyExist) {
+                log.info(alreadyExist.getMessage());
+                print("");
+                print("If you get THIS message please contact us. something went wrong.");
+                return;
+            }
+            print("");
+            print("A Station addressed at "+address+" has been added Successfully");
+
+
+            correct = false;
+            while (!correct) {
+                print("");
+                printl("Do you want to add an other one ? write Y/N :");
+                String ans = sc.next();
+                if (ans.equals("N") || ans.equals("n")) {
+                    correct = true;
+                    more = false;
+                } else if (!ans.equals("Y") && !ans.equals("y")) {
+                    print("");
+                    print("Wrong input. ");
+
+                } else {
+                    correct = true;
+                }
+            }
+        }
+
+
+    }
+
     private void addTrucks(){
         boolean more = true;
         long license_num = 0;
@@ -933,6 +1234,71 @@ public class PL_HOVALOT implements IPL_HOVALOT{
         }
     }
 
+    public void showDeliveryDetail() {
+        print("");
+        print("Please provide a Delivery's date.");
+        printl("Please provide year : ");
+        int y = sc.nextInt();
+        printl("Please provide month : ");
+        int m = sc.nextInt();
+        printl("Please provide day : ");
+        int d = sc.nextInt();
+        printl("Please provide hour : ");
+        int h = sc.nextInt();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, y);
+        calendar.set(Calendar.MONTH, m);
+        calendar.set(Calendar.DATE, d);
+        calendar.set(Calendar.HOUR_OF_DAY, h);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        java.sql.Date javaSqlDate = new java.sql.Date(calendar.getTime().getTime());
+
+
+        Delivery dl = ibl.getDelivery(javaSqlDate);
+
+        if(dl != null){
+            print("");
+            print("Information about delivery executed on "+javaSqlDate.toString()+" : ");
+            print("Driver : "+dl.getDriver());
+            print("Source : "+dl.getSource());
+            print("Truck numbrer : "+ dl.getTruck());
+            print("Participants");
+            for(Map.Entry<Integer,Participant> p : dl.getDestinations().entrySet()){
+                print(p.getKey() + " : " + p.getValue());
+            }
+            pressENTERKeyToContinue();
+        } else {
+            print("");
+            print("There is not such as station in our database.");
+            print("");
+        }
+    }
+
+
+
+
+    public void showStationDetail() {
+        print("");
+        printl("Please provide a Station's address : ");
+        String addr = sc.next();
+        Participant p = ibl.getParticipant(addr);
+        if(p != null){
+            print("");
+            print("The details for the Station addressed at "+addr+" : ");
+            print("Contact : "+p.getContact());
+            print("Phone : "+p.getPhone());
+            print("Max weight "+ p.getArea());
+            pressENTERKeyToContinue();
+        } else {
+            print("");
+            print("There is not such as station in our database.");
+            print("");
+        }
+    }
+
 
     public void showTruckDetail() {
         print("");
@@ -1049,6 +1415,38 @@ public class PL_HOVALOT implements IPL_HOVALOT{
     }
     private static void printl(String msg){
         System.out.print(msg);
+    }
+
+    private boolean stationsPickHandler(int pick){
+        switch (pick){
+            case 1:
+                try {
+                    showStationDetail();
+                } catch (Exception e) {
+                    log.info(e.getMessage());
+                    print("");
+                    print("You wrote a wrong input, please choose a valid choise.");
+                    print("");
+                }
+                break;
+            case 2:
+                addStations();
+                break;
+            case 3:
+                //editStations();
+                break;
+            case 4:
+                deleteStations();
+                break;
+            case 5:
+                return false;
+            default:
+                print("");
+                print("You wrote a wrong input, please choose a valid choise.");
+                print("");
+                break;
+        }
+        return true;
     }
 
 }
