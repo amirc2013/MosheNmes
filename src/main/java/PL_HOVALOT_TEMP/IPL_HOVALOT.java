@@ -7,6 +7,6 @@ public interface IPL_HOVALOT {
 
 
     void showMainMenu();
-    void showTruckDetail(long license_num);
+    void showTruckDetail();
     boolean mainMenuPick(int pick);
 }

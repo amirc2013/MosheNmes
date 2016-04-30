@@ -119,7 +119,7 @@ public class PL_HOVALOT implements IPL_HOVALOT{
         boolean isOn = true;
 
         while(isOn){
-            showTrucksMenu();
+            showDeliveriesMenu();
             try {
                 isOn = trucksPickHandler(Integer.parseInt(sc.next()));
             } catch (NumberFormatException e) {
@@ -137,11 +137,12 @@ public class PL_HOVALOT implements IPL_HOVALOT{
         switch (pick){
             case 1:
                 try {
-                    print("");
-                    printl("Please provide Truck's license number : ");
-                    showTruckDetail(sc.nextLong());
+                    showTruckDetail();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.info(e.getMessage());
+                    print("");
+                    print("You wrote a wrong input, please choose a valid choise.");
+                    print("");
                 }
                 break;
             case 2:
@@ -333,7 +334,10 @@ public class PL_HOVALOT implements IPL_HOVALOT{
 
     }
 
-    public void showTruckDetail(long license_num) {
+    public void showTruckDetail() {
+        print("");
+        printl("Please provide Truck's license number : ");
+        long license_num = sc.nextLong();
         Truck t = ibl.getTruck(license_num);
         if(t != null){
             print("");

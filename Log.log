@@ -1,11 +1,2 @@
-אפר 30, 2016 4:06:28 PM HovalotDAL.DAL_HOVALOT connectDatabase
+Apr 30, 2016 9:47:41 PM HovalotDAL.DAL_HOVALOT connectDatabase
 INFO: Opened database successfully
-אפר 30, 2016 4:06:39 PM HovalotDAL.DAL_HOVALOT getTruck
-INFO: A Truck details has been read , with the details below :
-Truck's license number     123
-Max weight :     123
-Model :        13
-Color :        123
-Clean weight :         123
-Appropriate license :      123
-
