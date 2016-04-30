@@ -1,12 +1,16 @@
 package BL_HOVALOT;
 
+import BackEnd.Delivery;
 import BackEnd.Driver;
+import BackEnd.Participant;
 import BackEnd.Truck;
 import Exceptions.AlreadyExist;
 import Exceptions.NotExist;
 import HovalotDAL.IDAL_HOVALOT;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.Map;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -19,6 +23,66 @@ public class BL_HOVALOT implements IBL_HOVALOT {
 
     private static final Logger log= Logger.getLogger( BL_HOVALOT.class.getName() );
     private IDAL_HOVALOT idal = null;
+
+    public Delivery getDelivery(Date date) {
+        return idal.getDelivery(date);
+    }
+
+    public void addDelivery(Delivery add) throws AlreadyExist {
+        Delivery temp = null;
+        if((temp = getDelivery(add.getDate()))==null){
+            idal.addDelivery(add);
+        }
+        else{
+            AlreadyExist a =  new AlreadyExist("Delivery");
+            log.info(a.getMessage());
+            throw a;
+        }
+    }
+
+    public void deleteDelivery(Delivery delete) throws NotExist {
+        Delivery temp = null;
+        if((temp = getDelivery(delete.getDate()))!=null){
+            idal.deleteDelivery(delete);
+        }
+        else{
+            NotExist n =  new NotExist("Delivery");
+            log.info(n.getMessage());
+            throw n;
+        }
+    }
+
+    public Participant getParticipant(String adress) {
+        return idal.getParticipant(adress);
+    }
+
+    public void addParticipant(Participant add) throws AlreadyExist {
+        Participant temp = null;
+        if((temp = idal.getParticipant(add.getAddress()))==null){
+            idal.addParticipant(add);
+        }
+        else{
+            AlreadyExist a =  new AlreadyExist("Participant");
+            log.info(a.getMessage());
+            throw a;
+        }
+    }
+
+    public void deleteParticipant(Participant delete) throws NotExist {
+        Participant temp = null;
+        if((temp = idal.getParticipant(delete.getAddress()))!=null){
+            idal.deleteParticipant(delete);
+        }
+        else{
+            NotExist n =  new NotExist("Participant");
+            log.info(n.getMessage());
+            throw n;
+        }
+    }
+
+    public Map<Integer, Participant> getPartInDelivery(Date d) {
+        return idal.getPartInDelivery(d);
+    }
 
     public void deleteTruck(Truck t) throws NotExist {
         Truck temp = null;
@@ -33,7 +97,7 @@ public class BL_HOVALOT implements IBL_HOVALOT {
     }
 
     public Driver getDriver(long driverID) {
-        return null;
+        return idal.getDriver(driverID);
     }
 
     public void addDriver(Driver add) throws AlreadyExist {
