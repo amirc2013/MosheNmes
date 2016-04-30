@@ -83,10 +83,6 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
         }
     }
 
-    public Driver getDriver(long driverID) {
-        return null;
-    }
-
     public void addDriver(Driver add) throws AlreadyExist {
         try {
             Statement stm = database.createStatement();
@@ -108,27 +104,56 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
         }
     }
 
-    public List<Participant> getPartInDelivery(Participant p) {
-        return null;
+    public Map<Integer, Participant> getPartInDelivery(Date d) {
+        Map<Integer, Participant> ans=new HashMap<Integer, Participant>();
+        try {
+            Statement stm = database.createStatement();
+            String sql = "SELECT adress , area , phone, contact, order_doc" +
+            "FROM delivery_destinations join participants WHERE delivery_destinations.date = "+ d.toString() +";" ;
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                ans.put(rs.getInt("order_doc"),new Participant(rs.getString("adress"), rs.getString("area"), rs.getLong("phone"), rs.getString("contact")));
+            }
+            log.info("Participants in Delivery "+d.toString()+" are:\n");
+            for(int i=0; i<ans.size();i++){
+                log.info(ans.get(i).toString()+"/n");
+            }
+        } catch (SQLException e) {
+            log.info(e.getMessage());
+        } catch (WrongInfo w){ /* Ignore*/  }
+        return ans;
     }
 
     public Delivery getDelivery(Date date) {
-        return null;
+        Delivery ans = null;
+        try {
+            Statement stm = database.createStatement();
+            String sql = "SELECT date , driverID , truck_num , source" +
+                    "FROM deliveries WHERE date = "+ date.toString() +";" ;
+            ResultSet rs = stm.executeQuery(sql);
+            if (rs.next()){
+                ans = new Delivery(rs.getDate("date"),getDriver(rs.getLong("driverID")),getTruck(rs.getLong("truck_num")),getParticipant(rs.getString("source")),getPartInDelivery(date));
+                log.info("A Delivery details has been read , with the details below :\n"+ans.toString());
+            }
+        } catch (SQLException e) {
+            log.info(e.getMessage());
+        } catch (WrongInfo w){ /* Ignore */ }
+        return ans;
     }
 
     public void addDelivery(Delivery add) throws AlreadyExist {
         try {
             Statement stm = database.createStatement();
             Map<Integer, Participant> m= add.getDestinations();
-            String sql = "INSERT INTO deliveries (date,driverID,truck_num) " +
-                    "VALUES (" + add.getDate() + ", '" + add.getDriver().getDriverID() +"' , '"+add.getTruck().getLicense_num()+ "');";
+            String sql = "INSERT INTO deliveries (date,driverID,truck_num,source) " +
+                    "VALUES (" + add.getDate().toString() + ", '" + add.getDriver().getDriverID() +"' , '"+add.getTruck().getLicense_num()+"' , '"+add.getSource().getAddress()+ "');";
             if (stm.executeUpdate(sql) != 1) {
                 log.info("Delivery " + add.getDate() + " NOT inserted to the DATABASE");
             }
             for (Map.Entry<Integer,Participant> entry : m.entrySet())
             {
-                String sql2 = "INSERT INTO delivery_paritcipants (date,adress,order_doc) " +
-                        "VALUES (" + add.getDate() + ", '" + entry.getValue().getAddress() +"' , '"+entry.getKey()+ "');";
+                String sql2 = "INSERT INTO delivery_destinations (date,adress,order_doc) " +
+                        "VALUES (" + add.getDate().toString() + ", '" + entry.getValue().getAddress() +"' , '"+entry.getKey()+ "');";
                 if (stm.executeUpdate(sql) != 1) {
                     log.info("Delivery " + add.getDate() + " NOT inserted to the DATABASE");
                     break;
@@ -143,33 +168,72 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
     }
 
     public void deleteDelivery(Delivery delete) throws NotExist {
+        try {
+            Statement stm = database.createStatement();
+            String sql = "DELETE from deliveries where date="+delete.getDate().toString()+";";
 
+            if(stm.executeUpdate(sql) == 1) {
+                log.info("Delivery "+delete.getDate().toString()+" got removed SUCCESSFULLY to the DATABASE");
+            } else {
+                log.info("Delivery "+delete.getDate().toString()+" NOT removed from the DATABASE");
+            }
+        } catch (SQLException e) {
+            log.info(e.getMessage());
+            log.info("Delivery " + delete.getDate().toString() + " NOT removed from the DATABASE");
+            throw new NotExist("date and hour");
+        }
     }
 
     public Participant getParticipant(String adress) {
-        return null;
+        Participant ans = null;
+        try {
+            Statement stm = database.createStatement();
+            String sql = "SELECT adress , area , phone, contact" +
+                    "FROM participants WHERE adress = "+ adress +";" ;
+            ResultSet rs = stm.executeQuery(sql);
+            if (rs.next()){
+                ans=new Participant(adress,rs.getString("area"),rs.getLong("phone"),rs.getString("contact"));
+                log.info("A Participant's details has been read , with the details below :\n"+ans.toString());
+            }
+        } catch (SQLException e) {
+            log.info(e.getMessage());
+        } catch (WrongInfo w){ /* Ignore*/  }
+        return ans;
     }
 
     public void addParticipant(Participant add) throws AlreadyExist {
         try {
             Statement stm = database.createStatement();
             String sql = "INSERT INTO participants (adress,area,phone,contact) " +
-                    "VALUES ("+add.getLicense_num()+", '"+add.getModel()+"', '"+add.getColor()+"', "+add.getClean_weight()+","+add.getMax_weight()+",'"+add.getAppro_license()+"');";
+                    "VALUES ("+add.getAddress()+", '"+add.getArea()+"', '"+add.getPhone()+"', "+add.getContact()+"');";
 
             if(stm.executeUpdate(sql) == 1) {
-                log.info("Truck num "+add.getLicense_num()+" got inserted SUCCESSFULLY to the DATABASE");
+                log.info("Participant "+add.getAddress()+" got inserted SUCCESSFULLY to the DATABASE");
             } else {
-                log.info("Truck num "+add.getLicense_num()+" NOT inserted to the DATABASE");
+                log.info("Participant "+add.getAddress()+" NOT inserted to the DATABASE");
             }
         } catch (SQLException e) {
             log.info(e.getMessage());
-            log.info("Truck num "+add.getLicense_num()+" NOT inserted to the DATABASE");
-            throw new AlreadyExist("license_num");
+            log.info("Participant "+add.getAddress()+" NOT inserted to the DATABASE");
+            throw new AlreadyExist("address");
         }
     }
 
     public void deleteParticipant(Participant delete) throws NotExist {
+        try {
+            Statement stm = database.createStatement();
+            String sql = "DELETE from participant where adress="+delete.getAddress()+";";
 
+            if(stm.executeUpdate(sql) == 1) {
+                log.info("Participant "+delete.getAddress()+" got removed SUCCESSFULLY to the DATABASE");
+            } else {
+                log.info("Participant "+delete.getAddress()+" NOT removed from the DATABASE");
+            }
+        } catch (SQLException e) {
+            log.info(e.getMessage());
+            log.info("Participant " + delete.getAddress() + " NOT removed from the DATABASE");
+            throw new NotExist("address");
+        }
     }
 
     public void deleteDriver(Driver delete) throws NotExist {
@@ -211,22 +275,24 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
         return ans;
     }
 
-    /*public Driver getDriver(long driverID) {
+    public Driver getDriver(long driverID) {
         Driver ans = null;
+        List<String> licenses=new ArrayList<String>();
         try {
             Statement stm = database.createStatement();
             String sql = "SELECT driverID , license " +
                     "FROM drivers WHERE driverID = "+ driverID +";" ;
             ResultSet rs = stm.executeQuery(sql);
-            if (rs.next()){
-                ans = new BackEnd.Driver(rs.getLong("driverID"),rs.getString("license"));
-                log.info("A Truck details has been read , with the details below :\n"+ans.toString());
+            while (rs.next()){
+                licenses.add(rs.getString("license"));
             }
+            ans=new Driver(driverID,licenses);
+            log.info("A Driver's details has been read , with the details below :\n"+ans.toString());
         } catch (SQLException e) {
             log.info(e.getMessage());
-        } catch (WrongInfo w){ /* Ignore  }
+        } catch (WrongInfo w){ /* Ignore*/  }
         return ans;
-    }*/
+    }
 
 
 

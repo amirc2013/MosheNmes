@@ -5,6 +5,7 @@ import Exceptions.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Amir on 4/27/2016.
@@ -32,6 +33,6 @@ public interface IDAL_HOVALOT {
     void addParticipant(Participant add) throws AlreadyExist;
     void deleteParticipant(Participant delete) throws NotExist;
 
-    List<Participant> getPartInDelivery(Participant p);
+    Map<Integer, Participant> getPartInDelivery(Date d);
 
 }
