@@ -101,15 +101,7 @@ public class BL_HOVALOT implements IBL_HOVALOT {
     }
 
     public void addDriver(Driver add) throws AlreadyExist {
-        Driver temp = null;
-        if((temp = idal.getDriver(add.getDriverID()))==null){
-            idal.addDriver(add);
-        }
-        else{
-            AlreadyExist a =  new AlreadyExist("Driver");
-            log.info(a.getMessage());
-            throw a;
-        }
+        idal.addDriver(add);
     }
 
     public void deleteDriver(Driver delete) throws NotExist {
