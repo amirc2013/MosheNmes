@@ -1,18 +1,27 @@
-May 01, 2016 1:54:08 AM HovalotDAL.DAL_HOVALOT connectDatabase
+May 01, 2016 2:47:28 AM HovalotDAL.DAL_HOVALOT connectDatabase
 INFO: Opened database successfully
-May 01, 2016 1:54:12 AM HovalotDAL.DAL_HOVALOT getParticipant
+May 01, 2016 2:47:31 AM HovalotDAL.DAL_HOVALOT getParticipant
 INFO: A Participant's details has been read , with the details below :
 BackEnd.Participant@37a71e93
-May 01, 2016 1:54:12 AM HovalotDAL.DAL_HOVALOT getParticipant
+May 01, 2016 2:47:31 AM HovalotDAL.DAL_HOVALOT getParticipant
 INFO: A Participant's details has been read , with the details below :
 BackEnd.Participant@7e6cbb7a
-May 01, 2016 1:54:12 AM HovalotDAL.DAL_HOVALOT deleteParticipant
+May 01, 2016 2:47:31 AM HovalotDAL.DAL_HOVALOT deleteParticipant
 INFO: Participant a got removed SUCCESSFULLY to the DATABASE
-May 01, 2016 1:54:58 AM HovalotDAL.DAL_HOVALOT getParticipant
-INFO: A Participant's details has been read , with the details below :
-BackEnd.Participant@76fb509a
-May 01, 2016 1:54:58 AM HovalotDAL.DAL_HOVALOT getParticipant
-INFO: A Participant's details has been read , with the details below :
-BackEnd.Participant@300ffa5d
-May 01, 2016 1:54:58 AM HovalotDAL.DAL_HOVALOT deleteParticipant
-INFO: Participant b got removed SUCCESSFULLY to the DATABASE
+May 01, 2016 2:47:44 AM HovalotDAL.DAL_HOVALOT getDriver
+INFO: A Driver's details has been read , with the details below :
+BackEnd.Driver@76fb509a
+May 01, 2016 2:47:54 AM HovalotDAL.DAL_HOVALOT addDriver
+INFO: Driver 315617506 got inserted SUCCESSFULLY to the DATABASE
+May 01, 2016 2:48:00 AM HovalotDAL.DAL_HOVALOT getDriver
+INFO: A Driver's details has been read , with the details below :
+BackEnd.Driver@300ffa5d
+May 01, 2016 2:48:12 AM HovalotDAL.DAL_HOVALOT getDriver
+INFO: A Driver's details has been read , with the details below :
+BackEnd.Driver@1f17ae12
+May 01, 2016 2:48:12 AM HovalotDAL.DAL_HOVALOT getDriver
+INFO: A Driver's details has been read , with the details below :
+BackEnd.Driver@4d405ef7
+May 01, 2016 2:48:34 AM HovalotDAL.DAL_HOVALOT getDriver
+INFO: A Driver's details has been read , with the details below :
+BackEnd.Driver@6193b845

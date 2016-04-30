@@ -107,7 +107,7 @@ public class BL_HOVALOT implements IBL_HOVALOT {
     public void deleteDriver(Driver delete) throws NotExist {
         Driver temp = null;
         if((temp = idal.getDriver(delete.getDriverID()))!=null){
-            idal.deleteDriver(delete);
+          //  idal.deleteDriver(delete);
         }
         else{
             NotExist n =  new NotExist("Truck");

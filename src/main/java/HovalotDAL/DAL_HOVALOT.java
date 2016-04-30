@@ -188,8 +188,8 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
         Participant ans = null;
         try {
             Statement stm = database.createStatement();
-            String sql = "SELECT adress , area , phone, contact" +
-                    "FROM participants WHERE adress = "+ adress +";" ;
+            String sql = "SELECT adress , area , phone, contact " +
+                    "FROM participants WHERE adress = '"+ adress +"';" ;
             ResultSet rs = stm.executeQuery(sql);
             if (rs.next()){
                 ans=new Participant(adress,rs.getString("area"),rs.getLong("phone"),rs.getString("contact"));
@@ -205,7 +205,7 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
         try {
             Statement stm = database.createStatement();
             String sql = "INSERT INTO participants (adress,area,phone,contact) " +
-                    "VALUES ("+add.getAddress()+", '"+add.getArea()+"', '"+add.getPhone()+"', "+add.getContact()+"');";
+                    "VALUES ('"+add.getAddress()+"', '"+add.getArea()+"', '"+add.getPhone()+"', '"+add.getContact()+"');";
 
             if(stm.executeUpdate(sql) == 1) {
                 log.info("Participant "+add.getAddress()+" got inserted SUCCESSFULLY to the DATABASE");
@@ -222,7 +222,7 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
     public void deleteParticipant(Participant delete) throws NotExist {
         try {
             Statement stm = database.createStatement();
-            String sql = "DELETE from participant where adress="+delete.getAddress()+";";
+            String sql = "DELETE from participants where adress='"+delete.getAddress()+"';";
 
             if(stm.executeUpdate(sql) == 1) {
                 log.info("Participant "+delete.getAddress()+" got removed SUCCESSFULLY to the DATABASE");
@@ -236,10 +236,10 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
         }
     }
 
-    public void deleteDriver(Driver delete) throws NotExist {
+    public void deleteDriver(Driver delete, String license) throws NotExist {
         try {
             Statement stm = database.createStatement();
-            String sql = "DELETE from drivers where driverID="+delete.getDriverID()+";";
+            String sql = "DELETE from drivers where driverID="+delete.getDriverID()+" and license= '"+license+"';";
 
             if(stm.executeUpdate(sql) == 1) {
                 log.info("Driver "+delete.getDriverID()+" got removed SUCCESSFULLY to the DATABASE");
