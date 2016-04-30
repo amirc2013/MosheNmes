@@ -1,8 +1,10 @@
 package PL_HOVALOT_TEMP;
 
 import BL_HOVALOT.IBL_HOVALOT;
+import BackEnd.Driver;
 import BackEnd.Truck;
 import Exceptions.AlreadyExist;
+import Exceptions.NotExist;
 import Exceptions.WrongInfo;
 
 import java.io.IOException;
@@ -85,7 +87,7 @@ public class PL_HOVALOT implements IPL_HOVALOT{
         while(isOn){
             showDriversMenu();
             try {
-                isOn = trucksPickHandler(Integer.parseInt(sc.next()));
+                isOn = driversPickHandler(Integer.parseInt(sc.next()));
             } catch (NumberFormatException e) {
                 print("");
                 print("You wrote a wrong input, please choose a valid choise.");
@@ -132,6 +134,37 @@ public class PL_HOVALOT implements IPL_HOVALOT{
 
 
     }
+    private boolean driversPickHandler(int pick){
+        switch (pick){
+            case 1:
+                try {
+                    showDriverDetail();
+                } catch (Exception e) {
+                    log.info(e.getMessage());
+                    print("");
+                    print("You wrote a wrong input, please choose a valid choise.");
+                    print("");
+                }
+                break;
+            case 2:
+                addTrucks();
+                break;
+            case 3:
+                editTruck();
+                break;
+            case 4:
+                deleteTruck();
+                break;
+            case 5:
+                return false;
+            default:
+                print("");
+                print("You wrote a wrong input, please choose a valid choise.");
+                print("");
+                break;
+        }
+        return true;
+    }
 
     private boolean trucksPickHandler(int pick){
         switch (pick){
@@ -149,10 +182,10 @@ public class PL_HOVALOT implements IPL_HOVALOT{
                 addTrucks();
                 break;
             case 3:
-//                stationsActions();
+                editTruck();
                 break;
             case 4:
-//                deliveriesActions();
+                deleteTruck();
                 break;
             case 5:
                 return false;
@@ -163,6 +196,261 @@ public class PL_HOVALOT implements IPL_HOVALOT{
                 break;
         }
         return true;
+    }
+
+    private void editTruck(){
+        boolean more = true;
+        long license_num = 0;
+        String color=null;
+        String model =null;
+        String appro = null;
+        int max = -1;
+        int clean = -1;
+        Truck toEdit = null;
+        while (more){
+            boolean correct = false;
+
+            while (!correct) {
+                print("");
+                printl("Please provide a Truck's license number you want to edit : ");
+                try {
+                    sc = new Scanner(System.in);
+                    license_num = sc.nextLong();
+                    if (license_num < -1)
+                        throw new Exception();
+                    if ((toEdit=ibl.getTruck(license_num)) == null) {
+                            if (license_num == -1)
+                                return;
+                            print("");
+                            print("There is not such as Truck in our database. Try again.\nOr write -1 to cancel.");
+
+                            correct = false;
+                    } else {
+                        correct = true;
+                    }
+                } catch (Exception e) {
+                    print("");
+                    print("Wrong input. write -1 if you want to cancel.");
+                }
+            }
+
+
+            correct = false;
+            while (!correct) {
+                print("");
+                print("Your current model : "+toEdit.getModel()+"\n");
+                printl("Please provide an alternative model or write -2 to continue  : ");
+                try {
+                    sc = new Scanner(System.in);
+                    model = sc.next();
+                    if (model.equals("") || model == null)
+                        throw new Exception();
+                    correct = true;
+                } catch (Exception e) {
+                    print("");
+                    print("Wrong input. write -1 if you want to cancel.");
+                }
+            }
+            if (model.equals("-1"))
+                return;
+
+            correct = false;
+            while (!correct) {
+                print("");
+                print("Your current color : "+toEdit.getColor()+"\n");
+                printl("Please provide an alternative color or write -2 to continue : ");
+                try {
+                    sc = new Scanner(System.in);
+                    color = sc.next();
+                    if (color.equals("") || color == null)
+                        throw new Exception();
+                    correct = true;
+                } catch (Exception e) {
+                    print("");
+                    print("Wrong input. write -1 if you want to cancel.");
+                }
+            }
+            if(color.equals("-1"))
+                return;
+
+            correct = false;
+            while (!correct) {
+                print("");
+                print("Your current maximum weight : "+toEdit.getMax_weight()+"\n");
+                printl("Please provide an alternative maximum weight or write -2 to continue : ");
+                try {
+                    sc = new Scanner(System.in);
+                    max = sc.nextInt();
+                    if (max < 1 && max != -2 && max != -1)
+                        throw new Exception();
+                    correct = true;
+                } catch (Exception e) {
+                    print("");
+                    print("Wrong input. write -1 if you want to cancel.");
+                }
+            }
+            if(max == -1)
+                return;
+
+            correct = false;
+            while (!correct) {
+                print("");
+                print("Your current clean weight : "+toEdit.getClean_weight()+"\n");
+                printl("Please provide an alternative clean weight or write -2 to continue : ");
+                try {
+                    sc = new Scanner(System.in);
+                    clean = sc.nextInt();
+                    if (clean < 1 && clean != -1 &&  clean != -2)
+                        throw new Exception();
+                    correct = true;
+                } catch (Exception e) {
+                    print("");
+                    print("Wrong input. write -1 if you want to cancel.");
+                }
+            }
+            if(clean == -1)
+                return;
+
+            correct = false;
+            while (!correct) {
+                print("");
+                print("Your current appropriate license : "+toEdit.getAppro_license()+"\n");
+                printl("Please provide an alternative appropriate license or write -2 to continue : ");
+                try {
+                    sc = new Scanner(System.in);
+                    appro = sc.next();
+                    if (appro.equals("") || appro == null)
+                        throw new Exception();
+                    correct = true;
+                } catch (Exception e) {
+                    print("");
+                    print("Wrong input. write -1 if you want to cancel.");
+                }
+            }
+            if(appro.equals("-1"))
+                return;
+
+
+
+            try {
+                if(!color.equals("-2"))
+                    toEdit.setColor(color);
+                if(max != -2)
+                    toEdit.setMax_weight(max);
+                if(clean!=-2)
+                    toEdit.setClean_weight(clean);
+                if(!model.equals("-2"))
+                    toEdit.setModel(model);
+                if(!appro.equals("-2"))
+                    toEdit.setAppro_license(appro);
+                ibl.editTruck(license_num,toEdit);
+            } catch (NotExist notExist) {
+                log.info(notExist.getMessage());
+                print("");
+                print("If you get THIS message please contact us. something went wrong.");
+                return;
+            } catch (WrongInfo wrongInfo) {
+                log.info(wrongInfo.getMessage());
+                print("");
+                print("If you get THIS message please contact us. something went wrong.");
+                return;
+            }
+            print("");
+            print("A Truck with license number "+license_num+" has been added Successfully");
+
+
+            correct = false;
+            while (!correct) {
+                print("");
+                printl("Do you want to add an other one ? write Y/N :");
+                String ans = sc.next();
+                if (ans.equals("N") || ans.equals("n")) {
+                    correct = true;
+                    more = false;
+                } else if (!ans.equals("Y") && !ans.equals("y")) {
+                    print("");
+                    print("Wrong input. ");
+
+                } else {
+                    correct = true;
+                }
+            }
+        }
+
+
+
+
+
+    }
+
+    private  void deleteTruck(){
+        boolean more = true;
+        long license_num = 0;
+        Truck toDelete = null;
+        while (more){
+            boolean correct = false;
+
+            while (!correct) {
+                print("");
+                printl("Please provide license number : ");
+                try {
+                    sc = new Scanner(System.in);
+                    license_num = sc.nextLong();
+                    if (license_num < -1)
+                        throw new Exception();
+                    if ((toDelete = ibl.getTruck(license_num)) == null) {
+
+                        if (license_num == -1)
+                            return;
+                        print("");
+                        print("There is not such as Truck in our database. Try again.\nOr write -1 to cancel.");
+
+                        correct = false;
+                    } else {
+                        correct = true;
+                    }
+                } catch (Exception e) {
+                    print("");
+                    print("Wrong input. write -1 if you want to cancel.");
+                }
+            }
+
+            try {
+                ibl.deleteTruck(toDelete);
+            } catch (NotExist notExist) {
+                log.info(notExist.getMessage());
+
+                print("");
+                print("If you get THIS message please contact us. something went wrong.");
+                print("");
+                return;
+
+
+            }
+
+            print("");
+            print("A Truck with license number "+license_num+" has been removed Successfully");
+
+
+            correct = false;
+            while (!correct) {
+                print("");
+                printl("Do you want to remove an other one ? write Y/N :");
+                String ans = sc.next();
+                if (ans.equals("N") || ans.equals("n")) {
+                    correct = true;
+                    more = false;
+                } else if (!ans.equals("Y") && !ans.equals("y")) {
+                    print("");
+                    print("Wrong input. ");
+
+                } else {
+                    correct = true;
+                }
+            }
+        }
+
+
     }
 
 
@@ -245,7 +533,7 @@ public class PL_HOVALOT implements IPL_HOVALOT{
                 try {
                     sc = new Scanner(System.in);
                     max = sc.nextInt();
-                    if (max < 1)
+                    if (max < 1 && max != -1)
                         throw new Exception();
                     correct = true;
                 } catch (Exception e) {
@@ -263,7 +551,7 @@ public class PL_HOVALOT implements IPL_HOVALOT{
                 try {
                     sc = new Scanner(System.in);
                     clean = sc.nextInt();
-                    if (clean < 1)
+                    if (clean < 1 && clean != -1)
                         throw new Exception();
                     correct = true;
                 } catch (Exception e) {
@@ -333,10 +621,30 @@ public class PL_HOVALOT implements IPL_HOVALOT{
 
 
     }
+    public void showDriverDetail() {
+        print("");
+        printl("Please provide a Driver's ID : ");
+        long driverID = sc.nextLong();
+        Driver t = ibl.getDriver(driverID);
+        if(t != null){
+            print("");
+            print("The details for the Driver's ID number  "+driverID+" : ");
+            print("Licenses : \n");
+            for(String s : t.getLicenses()){
+                print(s+"\n");
+            }
+            pressENTERKeyToContinue();
+        } else {
+            print("");
+            print("There is not such as Driver's ID number in our database.");
+            print("");
+        }
+    }
+
 
     public void showTruckDetail() {
         print("");
-        printl("Please provide Truck's license number : ");
+        printl("Please provide a Truck's license number : ");
         long license_num = sc.nextLong();
         Truck t = ibl.getTruck(license_num);
         if(t != null){

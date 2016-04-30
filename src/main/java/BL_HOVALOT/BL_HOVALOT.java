@@ -172,6 +172,22 @@ public class BL_HOVALOT implements IBL_HOVALOT {
         }
     }
 
+    public void editTruck(long license_num, Truck t) throws NotExist {
+        if(idal.getTruck(license_num)==null)
+            throw new NotExist("Truck");
+        else
+            idal.editTruck(license_num,t);
+    }
 
+    public void editDriver(long driverID, Driver d) throws NotExist {
 
+    }
+
+    public void editDelivery(Date date, Delivery d) throws NotExist {
+
+    }
+
+    public void editParticipant(String adress, Participant p) throws NotExist {
+
+    }
 }

@@ -286,15 +286,50 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
             while (rs.next()){
                 licenses.add(rs.getString("license"));
             }
-            ans=new Driver(driverID,licenses);
-            log.info("A Driver's details has been read , with the details below :\n"+ans.toString());
+            if(licenses.size()!=0) {
+                ans = new Driver(driverID, licenses);
+                log.info("A Driver's details has been read , with the details below :\n"+ans.toString());
+            }
         } catch (SQLException e) {
             log.info(e.getMessage());
-        } catch (WrongInfo w){ /* Ignore*/  }
+        } catch (WrongInfo w){  log.info(w.getMessage()); }
         return ans;
     }
 
+    /**
+     * @inv: a valid license
+     * @param license_num
+     * @param t
+     */
+    public void editTruck(long license_num, Truck t) {
+        try {
+            Statement stm = database.createStatement();
+            String sql = "UPDATE trucks " +
+                         "set model = '"+t.getModel() +"' , color = '"+t.getColor() +"' , maximum_weight = "+t.getMax_weight() +" , clean_weight = "+t.getClean_weight()+" , license_needed = '"+t.getAppro_license()+"' " +
+                         "where license_num = "+t.getLicense_num()+" ;";
+            int o = stm.executeUpdate(sql);
+            if(o==1){
+                log.info("Truck "+license_num+" got updated SUCCESSFULLY.");
+            } else {
+                log.info("Truck "+license_num+" has NOT updated.");
+            }
+        } catch (SQLException e) {
+            log.info(e.getMessage());
+        }
 
+    }
+
+    public void editDriver(long driverID, Driver d) {
+
+    }
+
+    public void editDelivery(Date date, Delivery d) {
+
+    }
+
+    public void editParticipant(String adress, Participant p) {
+
+    }
 
     //singleton
     private DAL_HOVALOT(){
