@@ -6,7 +6,8 @@ import Exceptions.*;
 
 import java.io.IOException;
 import java.sql.*;
-import java.util.List;
+import java.util.*;
+import java.util.Date;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -105,6 +106,70 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
             log.info("Driver "+add.getDriverID()+" NOT inserted to the DATABASE");
             throw new AlreadyExist("driverID, license");
         }
+    }
+
+    public List<Participant> getPartInDelivery(Participant p) {
+        return null;
+    }
+
+    public Delivery getDelivery(Date date) {
+        return null;
+    }
+
+    public void addDelivery(Delivery add) throws AlreadyExist {
+        try {
+            Statement stm = database.createStatement();
+            Map<Integer, Participant> m= add.getDestinations();
+            String sql = "INSERT INTO deliveries (date,driverID,truck_num) " +
+                    "VALUES (" + add.getDate() + ", '" + add.getDriver().getDriverID() +"' , '"+add.getTruck().getLicense_num()+ "');";
+            if (stm.executeUpdate(sql) != 1) {
+                log.info("Delivery " + add.getDate() + " NOT inserted to the DATABASE");
+            }
+            for (Map.Entry<Integer,Participant> entry : m.entrySet())
+            {
+                String sql2 = "INSERT INTO delivery_paritcipants (date,adress,order_doc) " +
+                        "VALUES (" + add.getDate() + ", '" + entry.getValue().getAddress() +"' , '"+entry.getKey()+ "');";
+                if (stm.executeUpdate(sql) != 1) {
+                    log.info("Delivery " + add.getDate() + " NOT inserted to the DATABASE");
+                    break;
+                }
+            }
+            log.info("Delivery " + add.getDate() + " got inserted SUCCESSFULLY to the DATABASE");
+        } catch (SQLException e) {
+            log.info(e.getMessage());
+            log.info("Delivery "+add.getDate()+" NOT inserted to the DATABASE");
+            throw new AlreadyExist("date and time");
+        }
+    }
+
+    public void deleteDelivery(Delivery delete) throws NotExist {
+
+    }
+
+    public Participant getParticipant(String adress) {
+        return null;
+    }
+
+    public void addParticipant(Participant add) throws AlreadyExist {
+        try {
+            Statement stm = database.createStatement();
+            String sql = "INSERT INTO participants (adress,area,phone,contact) " +
+                    "VALUES ("+add.getLicense_num()+", '"+add.getModel()+"', '"+add.getColor()+"', "+add.getClean_weight()+","+add.getMax_weight()+",'"+add.getAppro_license()+"');";
+
+            if(stm.executeUpdate(sql) == 1) {
+                log.info("Truck num "+add.getLicense_num()+" got inserted SUCCESSFULLY to the DATABASE");
+            } else {
+                log.info("Truck num "+add.getLicense_num()+" NOT inserted to the DATABASE");
+            }
+        } catch (SQLException e) {
+            log.info(e.getMessage());
+            log.info("Truck num "+add.getLicense_num()+" NOT inserted to the DATABASE");
+            throw new AlreadyExist("license_num");
+        }
+    }
+
+    public void deleteParticipant(Participant delete) throws NotExist {
+
     }
 
     public void deleteDriver(Driver delete) throws NotExist {
