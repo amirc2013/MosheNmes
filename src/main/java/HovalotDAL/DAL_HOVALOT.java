@@ -296,6 +296,22 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
         return ans;
     }
 
+    public boolean driverHasLicense(long driverId, String license) {
+        boolean ans=false;
+        try {
+            Statement stm = database.createStatement();
+            String sql = "SELECT driverID , license " +
+                    "FROM drivers WHERE driverID = "+ driverId +" and license= '"+license+"';" ;
+            ResultSet rs = stm.executeQuery(sql);
+            if(rs.next()) {
+                ans = true;
+            }
+        } catch (SQLException e) {
+            log.info(e.getMessage());
+        }
+        return ans;
+    }
+
     /**
      * @inv: a valid license
      * @param license_num

@@ -104,13 +104,13 @@ public class BL_HOVALOT implements IBL_HOVALOT {
         idal.addDriver(add);
     }
 
-    public void deleteDriver(Driver delete) throws NotExist {
+    public void deleteDriver(Driver delete, String license) throws NotExist {
         Driver temp = null;
         if((temp = idal.getDriver(delete.getDriverID()))!=null){
-          //  idal.deleteDriver(delete);
+            idal.deleteDriver(delete,license);
         }
         else{
-            NotExist n =  new NotExist("Truck");
+            NotExist n =  new NotExist("Driver");
             log.info(n.getMessage());
             throw n;
         }
@@ -171,15 +171,24 @@ public class BL_HOVALOT implements IBL_HOVALOT {
             idal.editTruck(license_num,t);
     }
 
-    public void editDriver(long driverID, Driver d) throws NotExist {
-
+    public void editDriver(long driverId, String oldLicense, String newLicense) throws NotExist {
+        if(idal.driverHasLicense(driverId,oldLicense))
+            idal.editDriver(driverId,oldLicense,newLicense);
+        else
+            throw new NotExist("Driver, License");
     }
 
     public void editDelivery(Date date, Delivery d) throws NotExist {
-
+        if(idal.getDelivery(date)==null)
+            throw new NotExist("Delivery");
+        else
+            editDelivery(date,d);
     }
 
     public void editParticipant(String adress, Participant p) throws NotExist {
-
+        if(idal.getParticipant(adress)==null)
+            throw new NotExist(adress);
+        else
+            editParticipant(adress,p);
     }
 }

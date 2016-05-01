@@ -22,8 +22,8 @@ public interface IBL_HOVALOT {
 
     Driver getDriver(long driverID);
     void addDriver(Driver add) throws AlreadyExist;
-    void deleteDriver(Driver delete) throws NotExist;
-    void editDriver(long driverID, Driver d)throws NotExist;
+    void deleteDriver(Driver delete, String license) throws NotExist;
+    void editDriver(long driverId, String oldLicense, String newLicense) throws NotExist;
 
 
     Delivery getDelivery(Date date);
