@@ -41,4 +41,6 @@ public interface IDAL_HOVALOT {
 
     Map<Integer, Participant> getPartInDelivery(Date d);
 
+    void clearTable();
+
 }

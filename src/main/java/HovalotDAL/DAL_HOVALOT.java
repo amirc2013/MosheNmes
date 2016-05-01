@@ -153,6 +153,25 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
         return ans;
     }
 
+    public void clearTable() {
+        try {
+            Statement stm = database.createStatement();
+            String sql = "DELETE from deliveries;";
+            stm.executeUpdate(sql);
+            sql = "DELETE from delivery_destinations;";
+            stm.executeUpdate(sql);
+            sql = "DELETE from drivers;";
+            stm.executeUpdate(sql);
+            sql = "DELETE from participants;";
+            stm.executeUpdate(sql);
+            sql = "DELETE from trucks;";
+            stm.executeUpdate(sql);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void addDelivery(Delivery add) throws AlreadyExist {
         SimpleDateFormat df = null;
         try {

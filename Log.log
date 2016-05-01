@@ -1,34 +1,157 @@
-May 01, 2016 6:46:32 PM HovalotDAL.DAL_HOVALOT connectDatabase
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT connectDatabase
 INFO: Opened database successfully
-May 01, 2016 6:46:54 PM HovalotDAL.DAL_HOVALOT getDelivery
-INFO: 2016-11-04 11:00
-May 01, 2016 6:46:57 PM HovalotDAL.DAL_HOVALOT getDriver
-INFO: A Driver's details has been read , with the details below :
-315617506
-May 01, 2016 6:47:00 PM HovalotDAL.DAL_HOVALOT getTruck
-INFO: A Truck details has been read , with the details below :
-Truck's license number     123
-Max weight :     123
-Model :        13
-Color :        123
-Clean weight :         123
-Appropriate license :      123
-
-May 01, 2016 6:47:06 PM HovalotDAL.DAL_HOVALOT getParticipant
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT addParticipant
+INFO: Participant shevet levi got inserted SUCCESSFULLY to the DATABASE
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT getParticipant
 INFO: A Participant's details has been read , with the details below :
-b
-May 01, 2016 6:47:11 PM HovalotDAL.DAL_HOVALOT getParticipant
+shevet levi
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT getParticipant
 INFO: A Participant's details has been read , with the details below :
-b
-May 01, 2016 6:47:13 PM HovalotDAL.DAL_HOVALOT getDriver
-INFO: A Driver's details has been read , with the details below :
-315617506
-May 01, 2016 6:47:13 PM HovalotDAL.DAL_HOVALOT getTruck
+shevet levi
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT deleteParticipant
+INFO: Participant shevet levi got removed SUCCESSFULLY to the DATABASE
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT addParticipant
+INFO: Participant shevet levi got inserted SUCCESSFULLY to the DATABASE
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT getParticipant
+INFO: A Participant's details has been read , with the details below :
+shevet levi
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT connectDatabase
+INFO: Opened database successfully
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT addParticipant
+INFO: Participant shevet levi got inserted SUCCESSFULLY to the DATABASE
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT getParticipant
+INFO: A Participant's details has been read , with the details below :
+shevet levi
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT getParticipant
+INFO: A Participant's details has been read , with the details below :
+shevet levi
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT deleteParticipant
+INFO: Participant shevet levi got removed SUCCESSFULLY to the DATABASE
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT connectDatabase
+INFO: Opened database successfully
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT addTruck
+INFO: Truck num 123123123 got inserted SUCCESSFULLY to the DATABASE
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT getTruck
 INFO: A Truck details has been read , with the details below :
-Truck's license number     123
-Max weight :     123
-Model :        13
-Color :        123
-Clean weight :         123
-Appropriate license :      123
+Truck's license number     123123123
+Max weight :     220
+Model :        Mazda
+Color :        Red
+Clean weight :         10
+Appropriate license :      A2
 
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT connectDatabase
+INFO: Opened database successfully
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT connectDatabase
+INFO: Opened database successfully
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT connectDatabase
+INFO: Opened database successfully
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT addDriver
+INFO: Driver 232323 got inserted SUCCESSFULLY to the DATABASE
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT getDriver
+INFO: A Driver's details has been read , with the details below :
+232323
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT getDriver
+INFO: A Driver's details has been read , with the details below :
+232323
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT deleteDriver
+INFO: Driver 232323 got removed SUCCESSFULLY to the DATABASE
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT getDriver
+INFO: A Driver's details has been read , with the details below :
+232323
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT connectDatabase
+INFO: Opened database successfully
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT addDriver
+INFO: Driver 232323 got inserted SUCCESSFULLY to the DATABASE
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT getDriver
+INFO: A Driver's details has been read , with the details below :
+232323
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT getDriver
+INFO: A Driver's details has been read , with the details below :
+232323
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT deleteDriver
+INFO: Driver 232323 got removed SUCCESSFULLY to the DATABASE
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT getDriver
+INFO: A Driver's details has been read , with the details below :
+232323
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT addDriver
+INFO: UNIQUE constraint failed: drivers.driverID, drivers.license
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT addDriver
+INFO: Driver 232323 NOT inserted to the DATABASE
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT getDriver
+INFO: A Driver's details has been read , with the details below :
+232323
+May 01, 2016 11:31:22 PM HovalotDAL.DAL_HOVALOT connectDatabase
+INFO: Opened database successfully
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT addParticipant
+INFO: Participant shevet levi got inserted SUCCESSFULLY to the DATABASE
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT getParticipant
+INFO: A Participant's details has been read , with the details below :
+shevet levi
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT getParticipant
+INFO: A Participant's details has been read , with the details below :
+shevet levi
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT editParticipant
+INFO: participant shevet levi got updated SUCCESSFULLY.
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT getParticipant
+INFO: A Participant's details has been read , with the details below :
+shevet levi
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT connectDatabase
+INFO: Opened database successfully
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT addTruck
+INFO: Truck num 5125 got inserted SUCCESSFULLY to the DATABASE
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT getTruck
+INFO: A Truck details has been read , with the details below :
+Truck's license number     5125
+Max weight :     220
+Model :        SHEV
+Color :        Red
+Clean weight :         10
+Appropriate license :      A2
+
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT getTruck
+INFO: A Truck details has been read , with the details below :
+Truck's license number     5125
+Max weight :     220
+Model :        SHEV
+Color :        Red
+Clean weight :         10
+Appropriate license :      A2
+
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT deleteTruck
+INFO: Truck num 5125 got removed SUCCESSFULLY to the DATABASE
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT addTruck
+INFO: Truck num 5125 got inserted SUCCESSFULLY to the DATABASE
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT getTruck
+INFO: A Truck details has been read , with the details below :
+Truck's license number     5125
+Max weight :     220
+Model :        SHEV
+Color :        Red
+Clean weight :         10
+Appropriate license :      A2
+
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT connectDatabase
+INFO: Opened database successfully
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT addTruck
+INFO: Truck num 123123123 got inserted SUCCESSFULLY to the DATABASE
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT getTruck
+INFO: A Truck details has been read , with the details below :
+Truck's license number     123123123
+Max weight :     220
+Model :        Mazda
+Color :        Red
+Clean weight :         10
+Appropriate license :      A2
+
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT getTruck
+INFO: A Truck details has been read , with the details below :
+Truck's license number     123123123
+Max weight :     220
+Model :        Mazda
+Color :        Red
+Clean weight :         10
+Appropriate license :      A2
+
+May 01, 2016 11:31:23 PM HovalotDAL.DAL_HOVALOT deleteTruck
+INFO: Truck num 123123123 got removed SUCCESSFULLY to the DATABASE

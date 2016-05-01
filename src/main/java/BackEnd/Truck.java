@@ -90,4 +90,10 @@ public class Truck {
                 "Clean weight :         "+getClean_weight()+"\n" +
                 "Appropriate license :      "+getAppro_license()+"\n" ;
     }
+
+    public boolean equals(Object o){
+        if(o instanceof Truck && ((Truck)o).getLicense_num()==license_num)
+            return true;
+        return false;
+    }
 }

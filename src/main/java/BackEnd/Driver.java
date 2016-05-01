@@ -42,4 +42,11 @@ public class Driver {
     public String toString(){
         return ""+driverID;
     }
+
+
+    public boolean equals(Object o){
+        if(o instanceof Driver && ((Driver)o).getDriverID() == driverID)
+            return  true;
+        return false;
+    }
 }
