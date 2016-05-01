@@ -182,13 +182,13 @@ public class BL_HOVALOT implements IBL_HOVALOT {
         if(idal.getDelivery(date)==null)
             throw new NotExist("Delivery");
         else
-            editDelivery(date,d);
+            idal.editDelivery(date,d);
     }
 
     public void editParticipant(String adress, Participant p) throws NotExist {
         if(idal.getParticipant(adress)==null)
             throw new NotExist(adress);
         else
-            editParticipant(adress,p);
+            idal.editParticipant(adress,p);
     }
 }

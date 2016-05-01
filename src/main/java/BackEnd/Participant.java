@@ -60,4 +60,19 @@ public class Participant {
         setPhone(phone);
         setContact(contact);
     }
+
+    @Override
+    public boolean equals(Object o){
+        boolean ans = false;
+        if(o instanceof  Participant)
+            if(((Participant)o).address.equals(address))
+                ans = true;
+
+        return ans;
+    }
+
+    @Override
+    public String toString(){
+        return ""+address;
+    }
 }

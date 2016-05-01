@@ -6,6 +6,9 @@ import Exceptions.*;
 
 import java.io.IOException;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
 import java.util.logging.FileHandler;
@@ -107,16 +110,19 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
     public Map<Integer, Participant> getPartInDelivery(Date d) {
         Map<Integer, Participant> ans=new HashMap<Integer, Participant>();
         try {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm");
+
             Statement stm = database.createStatement();
-            String sql = "SELECT adress , area , phone, contact, order_doc" +
-            "FROM delivery_destinations join participants WHERE delivery_destinations.date = "+ d.toString() +";" ;
+            String sql = "SELECT delivery_destinations.adress , area , phone, contact, order_doc " +
+            "FROM delivery_destinations join participants on delivery_destinations.adress = participants.adress where delivery_destinations.date = '"+ df.format(d) +"';" ;
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
                 ans.put(rs.getInt("order_doc"),new Participant(rs.getString("adress"), rs.getString("area"), rs.getLong("phone"), rs.getString("contact")));
+                log.info("We read here");
             }
-            log.info("Participants in Delivery "+d.toString()+" are:\n");
-            for(int i=0; i<ans.size();i++){
-                log.info(ans.get(i).toString()+"/n");
+            log.info("Participants in Delivery "+ df.format(d) +" are:\n");
+            for(Map.Entry<Integer,Participant> ti : ans.entrySet()){
+                log.info(ti.toString()+"/n");
             }
         } catch (SQLException e) {
             log.info(e.getMessage());
@@ -128,11 +134,17 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
         Delivery ans = null;
         try {
             Statement stm = database.createStatement();
-            String sql = "SELECT date , driverID , truck_num , source" +
-                    "FROM deliveries WHERE date = "+ date.toString() +";" ;
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm");
+            String sql = "SELECT date , driverID , truck_nun , source " +
+                    "FROM deliveries WHERE date = '"+ df.format(date) +"';" ;
+            log.info(df.format(date));
             ResultSet rs = stm.executeQuery(sql);
             if (rs.next()){
-                ans = new Delivery(rs.getDate("date"),getDriver(rs.getLong("driverID")),getTruck(rs.getLong("truck_num")),getParticipant(rs.getString("source")),getPartInDelivery(date));
+                try {
+                    ans = new Delivery(new java.sql.Date(df.parse(rs.getString("date")).getTime()),getDriver(rs.getLong("driverID")),getTruck(rs.getLong("truck_nun")),getParticipant(rs.getString("source")),getPartInDelivery(date));
+                } catch (ParseException e) {
+                    log.info(e.getMessage());
+                }
                 log.info("A Delivery details has been read , with the details below :\n"+ans.toString());
             }
         } catch (SQLException e) {
@@ -142,44 +154,58 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
     }
 
     public void addDelivery(Delivery add) throws AlreadyExist {
+        SimpleDateFormat df = null;
         try {
             Statement stm = database.createStatement();
             Map<Integer, Participant> m= add.getDestinations();
-            String sql = "INSERT INTO deliveries (date,driverID,truck_num,source) " +
-                    "VALUES (" + add.getDate().toString() + ", '" + add.getDriver().getDriverID() +"' , '"+add.getTruck().getLicense_num()+"' , '"+add.getSource().getAddress()+ "');";
+
+           // log.info(add.getDate().toString());
+            df = new SimpleDateFormat("yyyy-dd-MM HH:mm");
+            String sql = "INSERT INTO deliveries (date,driverID,truck_nun,source) " +
+                    "VALUES ('"+ df.format(add.getDate()).toString() + "', '" + add.getDriver().getDriverID() +"' , '"+add.getTruck().getLicense_num()+"' , '"+add.getSource().getAddress()+ "');";
             if (stm.executeUpdate(sql) != 1) {
-                log.info("Delivery " + add.getDate() + " NOT inserted to the DATABASE");
+                df = new SimpleDateFormat("yyyy-dd-MM HH:mm");
+                log.info("Delivery " + df.format(add.getDate()).toString() + " NOT inserted to the DATABASE");
             }
             for (Map.Entry<Integer,Participant> entry : m.entrySet())
             {
+                df = new SimpleDateFormat("yyyy-dd-MM HH:mm");
                 String sql2 = "INSERT INTO delivery_destinations (date,adress,order_doc) " +
-                        "VALUES (" + add.getDate().toString() + ", '" + entry.getValue().getAddress() +"' , '"+entry.getKey()+ "');";
-                if (stm.executeUpdate(sql) != 1) {
-                    log.info("Delivery " + add.getDate() + " NOT inserted to the DATABASE");
+                        "VALUES ('" + df.format(add.getDate()).toString() + "', '" + entry.getValue().getAddress() +"' , "+entry.getKey()+ ");";
+                if (stm.executeUpdate(sql2) != 1) {
+                    log.info("Delivery " + df.format(add.getDate()).toString() + " NOT inserted to the DATABASE");
                     break;
                 }
             }
-            log.info("Delivery " + add.getDate() + " got inserted SUCCESSFULLY to the DATABASE");
+            log.info("Delivery " + df.format(add.getDate()) + " got inserted SUCCESSFULLY to the DATABASE");
         } catch (SQLException e) {
             log.info(e.getMessage());
-            log.info("Delivery "+add.getDate()+" NOT inserted to the DATABASE");
+            df = new SimpleDateFormat("yyyy-dd-MM HH:mm");
+            log.info("Delivery "+df.format(add.getDate())+" NOT inserted to the DATABASE");
             throw new AlreadyExist("date and time");
         }
     }
 
     public void deleteDelivery(Delivery delete) throws NotExist {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm");
+
         try {
+
             Statement stm = database.createStatement();
-            String sql = "DELETE from deliveries where date="+delete.getDate().toString()+";";
+            String sql = "DELETE from deliveries where date='"+df.format(delete.getDate())+"';";
 
             if(stm.executeUpdate(sql) == 1) {
-                log.info("Delivery "+delete.getDate().toString()+" got removed SUCCESSFULLY to the DATABASE");
+                String sql2= "DELETE from delivery_destinations where date='"+df.format(delete.getDate())+"';";
+                if(stm.executeUpdate(sql2)>=1)
+                    log.info("Delivery "+df.format(delete.getDate())+" got removed SUCCESSFULLY to the DATABASE");
+                else
+                    log.info("Delivery "+df.format(delete.getDate())+" NOT removed from the DATABASE");
             } else {
-                log.info("Delivery "+delete.getDate().toString()+" NOT removed from the DATABASE");
+                log.info("Delivery "+df.format(delete.getDate())+" NOT removed from the DATABASE");
             }
         } catch (SQLException e) {
             log.info(e.getMessage());
-            log.info("Delivery " + delete.getDate().toString() + " NOT removed from the DATABASE");
+            log.info("Delivery " + df.format(delete.getDate()) + " NOT removed from the DATABASE");
             throw new NotExist("date and hour");
         }
     }
@@ -356,11 +382,12 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
     public void editDelivery(Date date, Delivery d) {
         try {
             Statement stm = database.createStatement();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm");
             String sql = "UPDATE deliveries " +
-                    "set driverID = "+d.getDriver().getDriverID()+" " +
-                    "truck_num = "+d.getTruck().getLicense_num()+" "+
+                    "set driverID = "+d.getDriver().getDriverID()+", " +
+                    "truck_nun = "+d.getTruck().getLicense_num()+", "+
                     "source = '"+d.getSource().getAddress()+"' "+
-                    "where date = '"+date+" ;";
+                    "where date = '"+df.format(d.getDate())+"' ;";
             editPartInDelivery(d);
             int o = stm.executeUpdate(sql);
             if(o==1){
@@ -377,11 +404,15 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
     private void editPartInDelivery(Delivery d){
         try {
             Map<Integer,Participant> m=d.getDestinations();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm");
             Statement stm = database.createStatement();
-            String sql = "DELETE from delivery_destinations where date='"+d.getDate()+"';";
+            String sql = "DELETE from delivery_destinations where date='"+df.format(d.getDate())+"';";
+            stm.executeUpdate(sql);
             for (Map.Entry<Integer, Participant> entry : m.entrySet()) {
                 String sql2 = "INSERT INTO delivery_destinations (date,adress,order_doc) " +
-                        "VALUES (" + d.getDate().toString() + ", '" + entry.getValue().getAddress() + "' , '" + entry.getKey() + "');";
+                        "VALUES ('" +df.format(d.getDate()) + "', '" + entry.getValue().getAddress() + "' , '" + entry.getKey() + "');";
+                stm.executeUpdate(sql2);
+                log.info("participant"+entry.getValue().getAddress()+ " edited for "+df.format(d.getDate()));
             }
         }
         catch (SQLException e) {
@@ -393,8 +424,8 @@ public class DAL_HOVALOT implements IDAL_HOVALOT {
         try {
             Statement stm = database.createStatement();
             String sql = "UPDATE participants " +
-                    "set area = '"+p.getArea()+"' " +
-                    "phone = "+p.getPhone()+" "+
+                    "set area = '"+p.getArea()+"' , " +
+                    "phone = "+p.getPhone()+" , "+
                     "contact = '"+p.getContact()+"' "+
                     "where adress = '"+adress+"' ;";
             int o = stm.executeUpdate(sql);

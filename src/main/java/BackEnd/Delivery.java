@@ -2,7 +2,7 @@ package BackEnd;
 
 import Exceptions.WrongInfo;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Map;
 
 /**
@@ -10,13 +10,13 @@ import java.util.Map;
  */
 public class Delivery {
 
-    private Date date;
+    private java.sql.Date date;
     private Driver driver;
     private Truck truck;
     private Participant source;
     private Map<Integer,Participant> destinations;
 
-    public Delivery(Date date, Driver driver, Truck truck, Participant source, Map<Integer, Participant> destinations) throws WrongInfo {
+    public Delivery(java.sql.Date date, Driver driver, Truck truck, Participant source, Map<Integer, Participant> destinations) throws WrongInfo {
         this.date = date;
         this.driver = driver;
         this.truck = truck;
@@ -29,7 +29,7 @@ public class Delivery {
         return date;
     }
 
-    public void setDate(Date date) throws WrongInfo{
+    public void setDate(java.sql.Date date) throws WrongInfo{
         if(date == null)
             throw new WrongInfo("date");
         this.date = date;

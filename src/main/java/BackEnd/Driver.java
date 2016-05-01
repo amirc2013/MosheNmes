@@ -37,4 +37,9 @@ public class Driver {
             throw new WrongInfo("licenses");
         this.licenses = licenses;
     }
+
+    @Override
+    public String toString(){
+        return ""+driverID;
+    }
 }
