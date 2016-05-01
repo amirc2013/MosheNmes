@@ -1,11 +1,11 @@
-May 01, 2016 6:32:18 PM HovalotDAL.DAL_HOVALOT connectDatabase
+May 01, 2016 6:46:32 PM HovalotDAL.DAL_HOVALOT connectDatabase
 INFO: Opened database successfully
-May 01, 2016 6:32:26 PM HovalotDAL.DAL_HOVALOT getDelivery
-INFO: 1996-11-04 11:00
-May 01, 2016 6:32:26 PM HovalotDAL.DAL_HOVALOT getDriver
+May 01, 2016 6:46:54 PM HovalotDAL.DAL_HOVALOT getDelivery
+INFO: 2016-11-04 11:00
+May 01, 2016 6:46:57 PM HovalotDAL.DAL_HOVALOT getDriver
 INFO: A Driver's details has been read , with the details below :
 315617506
-May 01, 2016 6:32:26 PM HovalotDAL.DAL_HOVALOT getTruck
+May 01, 2016 6:47:00 PM HovalotDAL.DAL_HOVALOT getTruck
 INFO: A Truck details has been read , with the details below :
 Truck's license number     123
 Max weight :     123
@@ -14,46 +14,16 @@ Color :        123
 Clean weight :         123
 Appropriate license :      123
 
-May 01, 2016 6:32:26 PM HovalotDAL.DAL_HOVALOT getParticipant
+May 01, 2016 6:47:06 PM HovalotDAL.DAL_HOVALOT getParticipant
 INFO: A Participant's details has been read , with the details below :
 b
-May 01, 2016 6:32:26 PM HovalotDAL.DAL_HOVALOT getPartInDelivery
-INFO: We read here
-May 01, 2016 6:32:26 PM HovalotDAL.DAL_HOVALOT getPartInDelivery
-INFO: Participants in Delivery 1996-11-04 11:00 are:
-
-May 01, 2016 6:32:26 PM HovalotDAL.DAL_HOVALOT getPartInDelivery
-INFO: 4=b/n
-May 01, 2016 6:32:26 PM HovalotDAL.DAL_HOVALOT getDelivery
-INFO: A Delivery details has been read , with the details below :
-BackEnd.Delivery@37a71e93
-May 01, 2016 6:32:49 PM HovalotDAL.DAL_HOVALOT getParticipant
+May 01, 2016 6:47:11 PM HovalotDAL.DAL_HOVALOT getParticipant
 INFO: A Participant's details has been read , with the details below :
-a
-May 01, 2016 6:32:51 PM HovalotDAL.DAL_HOVALOT getParticipant
-INFO: A Participant's details has been read , with the details below :
-a
-May 01, 2016 6:32:54 PM HovalotDAL.DAL_HOVALOT getTruck
-INFO: A Truck details has been read , with the details below :
-Truck's license number     123412341235
-Max weight :     230
-Model :        Jujitsu
-Color :        Red
-Clean weight :         20
-Appropriate license :      A2
-
-May 01, 2016 6:32:54 PM HovalotDAL.DAL_HOVALOT getParticipant
-INFO: A Participant's details has been read , with the details below :
-a
-May 01, 2016 6:32:54 PM HovalotDAL.DAL_HOVALOT getDriver
-INFO: A Driver's details has been read , with the details below :
-123123123
-May 01, 2016 6:32:54 PM HovalotDAL.DAL_HOVALOT getDelivery
-INFO: 1996-11-04 11:00
-May 01, 2016 6:32:54 PM HovalotDAL.DAL_HOVALOT getDriver
+b
+May 01, 2016 6:47:13 PM HovalotDAL.DAL_HOVALOT getDriver
 INFO: A Driver's details has been read , with the details below :
 315617506
-May 01, 2016 6:32:54 PM HovalotDAL.DAL_HOVALOT getTruck
+May 01, 2016 6:47:13 PM HovalotDAL.DAL_HOVALOT getTruck
 INFO: A Truck details has been read , with the details below :
 Truck's license number     123
 Max weight :     123
@@ -62,20 +32,3 @@ Color :        123
 Clean weight :         123
 Appropriate license :      123
 
-May 01, 2016 6:32:54 PM HovalotDAL.DAL_HOVALOT getParticipant
-INFO: A Participant's details has been read , with the details below :
-b
-May 01, 2016 6:32:54 PM HovalotDAL.DAL_HOVALOT getPartInDelivery
-INFO: We read here
-May 01, 2016 6:32:54 PM HovalotDAL.DAL_HOVALOT getPartInDelivery
-INFO: Participants in Delivery 1996-11-04 11:00 are:
-
-May 01, 2016 6:32:54 PM HovalotDAL.DAL_HOVALOT getPartInDelivery
-INFO: 4=b/n
-May 01, 2016 6:32:54 PM HovalotDAL.DAL_HOVALOT getDelivery
-INFO: A Delivery details has been read , with the details below :
-BackEnd.Delivery@7e6cbb7a
-May 01, 2016 6:32:54 PM HovalotDAL.DAL_HOVALOT editPartInDelivery
-INFO: participanta edited for 1996-11-04 11:00
-May 01, 2016 6:32:54 PM HovalotDAL.DAL_HOVALOT editDelivery
-INFO: delivery 1996-04-11 got updated SUCCESSFULLY.

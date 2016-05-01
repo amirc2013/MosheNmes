@@ -968,6 +968,14 @@ public class PL_HOVALOT implements IPL_HOVALOT{
                 print("If you get THIS message please contact us. something went wrong.");
                 return;
             }
+
+            if(!ibl.getDriver(driverID).getLicenses().contains(ibl.getTruck(truckL).getAppro_license())){
+                print("");
+                print("Your driver is not allowed to drive on this truck !!!!!!\n try again.");
+                return;
+            }
+
+
             try {
                 ibl.addDelivery(dl);
             } catch (AlreadyExist alreadyExist) {
@@ -2109,6 +2117,11 @@ public class PL_HOVALOT implements IPL_HOVALOT{
                 } catch (WrongInfo wrongInfo) {
                     wrongInfo.printStackTrace();
                 }
+            }
+            if(!ibl.getDriver(driverID).getLicenses().contains(ibl.getTruck(truck).getAppro_license())){
+                print("");
+                print("Your driver is not allowed to drive on this truck !!!!!!\n try again.");
+                return;
             }
 
             try {
